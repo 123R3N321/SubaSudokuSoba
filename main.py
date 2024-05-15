@@ -330,13 +330,95 @@ class AlgorithmX:
         # Backtrack
         return False
 
+#checker for the sudoku puzzle to see if solution is correct
+def sudokuChecker(arr):
+    
+
+    #horizontal check
+    for i in range(len(Arr)):
+        for j in Arr[i]:
+            if Arr[i].count(j) == 2:
+                print("Horizontal error at line", i+1)
+                print("There is a duplicate of", j)
+                return False
+    
+    #vertical check
+    for col in range(9):
+        lst = []
+        for row in Arr:
+            lst.append(row[col])
+        for i in range(9):
+            if lst.count(lst[i]) == 2:
+                print("Vertical error at line", i+1)
+                print("There is a duplicate of", lst[i])
+                return False
+        
+    #box check
+    boxes = []
+    for i in range(0, 9,3):
+        box = []
+        lst = [Arr[thing] for thing in range(i,i+3)]
+        for j in range(0, 9,  3):
+            box = [lst[count][ind] for count in range(3) for ind in range(j,j+3)]
+            boxes.append(box)
+    for box in range(9):
+        if sum(boxes[box]) != 45:
+            print("Duplicate at box", box)
+            return False
+    
+    #rightDiagonal check
+    rightDiag = 0
+    for i in range(9):
+        rightDiag +=(Arr[i][i])
+    if rightDiag != 45:
+        print("Right Diagnoal has duplicates")
+        return False
+    
+    #Left Diagonal check
+    leftDiag = 0
+    for i in range(8,-1,-1):
+        leftDiag +=(Arr[i][i])
+    if leftDiag != 45:
+        print("Left Diagnoal has duplicates")
+        return False
+
+    print("Everything Good")
+    return True
+
 if __name__ == '__main__':
-    Arr = [[0 for _ in range(9)] for _ in range(9)]
-    # Arr[4][4] = 5
+    #reading input file
+    f = open("Input3.txt", "r")
+    lst = f.read().splitlines()
+    Arr = []
+    
+    #appending each line into the array 
+    for line in lst:
+        line = [int(j) for j in line if j != " "]
+        Arr.append(line)
+
+    f.close()
     print("before: ")
     gamePrint(Arr)
     print()
     print("after: ")
     Solver.solve_sudoku(Arr)
     gamePrint(Arr)
+    sudokuChecker(Arr)
+    thing = ""
+
+    #converting the line into string and correct format for out[ut]
+    for i in Arr:
+        i = [str(j) for j in i]
+        n = 1
+        while(n < len(i)):
+            i.insert(n, " ")
+            n +=(2)
+        thing += "".join(i)
+        thing += "\n"
+    print(thing)
+    f = open("Output 3", "w")
+    f.write(thing)
+    f.close()
+            
+    
 
