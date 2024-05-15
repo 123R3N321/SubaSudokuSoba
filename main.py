@@ -59,7 +59,32 @@ class Solver:
                     if indHashMap[arr[rowCheckPoint+row][colCheckPoint+col]]>0:
                         return False
                     indHashMap[(arr[rowCheckPoint+row][colCheckPoint+col])]+=1
+        indHashMap = [0 for _ in range(9)]
+        # check backward diagonal
+        start = 0
+        while start < 9:
+            if arr[start][start] == 0:
+                continue
+            if indHashMap[arr[start][start]]>0:
+                return False
+            indHashMap[arr[start][start]] += 1
+            start += 1
+
+        indHashMap = [0 for _ in range(9)]
+        # check forward diagonal
+        start = 0
+        while start < 9:
+            if arr[8-start][start] == 0:
+                continue
+            if indHashMap[arr[8-start][start]] > 0:
+                return False
+            indHashMap[arr[8-start][start]] += 1
+            start += 1
+
         return True
+
+
+
 
     @staticmethod
     def solve_sudoku(arr):
